@@ -33,14 +33,14 @@ export default function NewsForm() {
                 const colRef = collection(db, 'news_item');
 
                 // Insert each news item into Firestore
-                const promises = data.articles.map(async (element) => {
+                const promises = data.results.map(async (element) => {
                     const news = {
                         title: element.title,
                         description: element.description,
-                        imgURL: element.urlToImage,
-                        readMore: element.url,
-                        date: element.publishedAt,
-                        source: element.source.name,
+                        imgURL: element.image_url,
+                        readMore: element.link,
+                        date: element.pubDate,
+                        source: element.source_name,
                         category: "all"
                     };
 
