@@ -4,13 +4,13 @@ import { getFirestore, collection, getDocs, addDoc } from 'firebase/firestore/li
 
 // Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyDoQy5Z-k2COIrp16XREEhWYcUzF96Jc1c",
-    authDomain: "newsapi-35fb0.firebaseapp.com",
-    projectId: "newsapi-35fb0",
-    storageBucket: "newsapi-35fb0.firebasestorage.app",
-    messagingSenderId: "1072295158124",
-    appId: "1:1072295158124:web:b7855a358a1587b318d349",
-    measurementId: "G-W0NZS61JQD"
+    apiKey: process.env.REACT_APP_API_KEY,
+    authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_APP_ID,
+    measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
 const app = initializeApp(firebaseConfig);
@@ -23,17 +23,17 @@ export default function NewsForm() {
     useEffect(() => {
         const fetchAndStoreNewsItems = async () => {
             // Fetch the time.json file
-            const timeResponse = await fetch('/time.json');
-            const timeData = await timeResponse.json();
-            const savedDate = new Date(timeData.time);
-            const currentDate = new Date();
+            // const timeResponse = await fetch('/time.json');
+            // const timeData = await timeResponse.json();
+            // const savedDate = new Date(timeData.time);
+            // const currentDate = new Date();
 
             // Check if the current date is one day ahead of the saved date
-            savedDate.setDate(savedDate.getDate() + 1);
-            if (currentDate < savedDate) {
-                console.log("Current date is not one day ahead. Exiting function.");
-                return; // Exit the function if the condition is not met
-            }
+            // savedDate.setDate(savedDate.getDate() + 1);
+            // if (currentDate < savedDate) {
+            //     console.log("Current date is not one day ahead. Exiting function.");
+            //     return; // Exit the function if the condition is not met
+            // }
 
             // Proceed with fetching news items if the condition is met
             const response = await fetch('https://newsapi.org/v2/everything?q=bitcoin&apiKey=40562ffe6b24479b8044fa96f74851e1');
