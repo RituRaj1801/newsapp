@@ -22,20 +22,7 @@ export default function NewsForm() {
     // Fetch news items from API and insert into Firestore on component mount
     useEffect(() => {
         const fetchAndStoreNewsItems = async () => {
-            // Fetch the time.json file
-            // const timeResponse = await fetch('/time.json');
-            // const timeData = await timeResponse.json();
-            // const savedDate = new Date(timeData.time);
-            // const currentDate = new Date();
-
-            // Check if the current date is one day ahead of the saved date
-            // savedDate.setDate(savedDate.getDate() + 1);
-            // if (currentDate < savedDate) {
-            //     console.log("Current date is not one day ahead. Exiting function.");
-            //     return; // Exit the function if the condition is not met
-            // }
-
-            // Proceed with fetching news items if the condition is met
+            
             const response = await fetch('https://newsapi.org/v2/everything?q=bitcoin&apiKey=40562ffe6b24479b8044fa96f74851e1');
 
             if (!response.ok) {
