@@ -26,6 +26,7 @@ export default function NewsForm() {
                 // Fetch news items
                 const response = await fetch('https://newsdata.io/api/1/latest?apikey='+process.env.REACT_APP_NEWS_API);
                 if (!response.ok) {
+                    
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
