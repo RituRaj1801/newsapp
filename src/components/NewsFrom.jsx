@@ -19,45 +19,46 @@ const db = getFirestore(app);
 export default function NewsForm() {
     const [newsItems, setNewsItems] = useState([]);
 
-    // Fetch news items from API and insert into Firestore on component mount
     useEffect(() => {
         const fetchAndStoreNewsItems = async () => {
-            
-            const response = await fetch('https://newsapi.org/v2/everything?q=bitcoin&apiKey=40562ffe6b24479b8044fa96f74851e1');
-
-            if (!response.ok) {
-                console.error(`HTTP error! status: ${response.status}`);
-                return;
-            }
-
-            const data = await response.json();
-            const colRef = collection(db, 'news_item');
-
-            // Insert each news item into Firestore
-            const promises = data.articles.map(async (element) => {
-                const news = {
-                    title: element.title,
-                    description: element.description,
-                    imgURL: element.urlToImage,
-                    readMore: element.url,
-                    date: element.publishedAt,
-                    source: element.source.name,
-                    category: "all"
-                };
-
-                try {
-                    await addDoc(colRef, news);
-                    console.log("News item added:", news);
-                } catch (error) {
-                    console.error("Error adding news item:", error);
+            try {
+                // Fetch news items
+                const response = await fetch('https://newsapi.org/v2/everything?q=bitcoin&apiKey='+process.env.REACT_APP_NEWS_API);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
-            });
 
-            await Promise.all(promises); // Wait for all add operations to complete
+                const data = await response.json();
+                const colRef = collection(db, 'news_item');
 
-            // Refresh the news items after adding
-            const updatedItems = await getDocs(colRef);
-            setNewsItems(updatedItems.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+                // Insert each news item into Firestore
+                const promises = data.articles.map(async (element) => {
+                    const news = {
+                        title: element.title,
+                        description: element.description,
+                        imgURL: element.urlToImage,
+                        readMore: element.url,
+                        date: element.publishedAt,
+                        source: element.source.name,
+                        category: "all"
+                    };
+
+                    try {
+                        await addDoc(colRef, news);
+                        console.log("News item added:", news);
+                    } catch (error) {
+                        console.error("Error adding news item:", error);
+                    }
+                });
+
+                await Promise.all(promises); // Wait for all add operations to complete
+
+                // Refresh the news items after adding
+                const updatedItems = await getDocs(colRef);
+                setNewsItems(updatedItems.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+            } catch (error) {
+                console.error("Error fetching or storing news items:", error);
+            }
         };
 
         fetchAndStoreNewsItems();
