@@ -22,11 +22,24 @@ export default function NewsForm() {
     useEffect(() => {
         const fetchAndStoreNewsItems = async () => {
             try {
-                console.log(process.env.REACT_APP_NEWS_API)
-                // Fetch news items
-                const response = await fetch('https://newsdata.io/api/1/latest?apikey='+process.env.REACT_APP_NEWS_API);
+                const timeResponse = await fetch('/time.json');
+                const timeData = await timeResponse.json();
+                const savedDate = new Date(timeData.time);
+                const currentDate = new Date();
+
+                // Check if the current date is at least 30 minutes ahead of the saved date
+                const thirtyMinutesInMilliseconds = 30 * 60 * 1000; // 30 minutes in milliseconds
+                if (currentDate - savedDate < thirtyMinutesInMilliseconds) {
+                    console.log("Current date is not at least 30 minutes ahead. Exiting function.");
+                    return; // Exit the function if the condition is not met
+                }
+                if (currentDate < savedDate) {
+                    console.log("Current date is not one day ahead. Exiting function.");
+                    return; // Exit the function if the condition is not met
+                }
+                const response = await fetch('https://newsdata.io/api/1/latest?apikey=' + process.env.REACT_APP_NEWS_API);
                 if (!response.ok) {
-                    
+
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
