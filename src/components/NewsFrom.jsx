@@ -22,6 +22,7 @@ export default function NewsForm() {
     useEffect(() => {
         const fetchAndStoreNewsItems = async () => {
             try {
+                console.log(process.env.REACT_APP_NEWS_API)
                 // Fetch news items
                 const response = await fetch('https://newsapi.org/v2/everything?q=bitcoin&apiKey='+process.env.REACT_APP_NEWS_API);
                 if (!response.ok) {
